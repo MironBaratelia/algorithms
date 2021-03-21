@@ -3,6 +3,15 @@
 
 using namespace std;
 
+vector<int> factorise(int n, const vector<int>& lp) {
+	vector<int> ans;
+	while (n > 1) {
+		ans.push_back(lp[n]);
+		n /= lp[n];
+	}
+	return ans;
+}
+
 int main() {
 	int n;
 	cin >> n;
