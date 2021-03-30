@@ -24,8 +24,8 @@ int main() {
 		for (int j = 0; j <= W; ++j) {
 			dp[i][j] = dp[i - 1][j];
 			p[i][j] = 0;
-			if (w[i] <= j && dp[i - 1][j - w[i]] > dp[i][j]) {
-				dp[i][j] = dp[i - 1][j - w[i]];
+			if (w[i] <= j && dp[i - 1][j - w[i]] + c[i] > dp[i][j]) {
+				dp[i][j] = dp[i - 1][j - w[i]] + c[i];
 				p[i][j] = 1;
 			}
 		}
