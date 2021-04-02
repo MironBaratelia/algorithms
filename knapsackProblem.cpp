@@ -3,49 +3,40 @@
 #include <fstream>
 #include <algorithm>
 #include <math.h>
+#include <map>
 
 using namespace std;
 
 int main() {
-	int n, W;
-	cin >> n >> W;
-	vector<int> w(n + 1);
+	int n, m;
+	cin >> n >> m;
+	vector<int> w(n + 1), c(n + 1);
+	for (int i = 1; i <= n; ++i) cin >> w[i];
+	for (int i = 1; i <= n; ++i) cin >> c[i];
+	vector<vector<int>> dp(n + 1, vector<int>(m + 1, 0));
+	vector<vector<bool>> p(n + 1, vector<bool>(m + 1));
+
 	for (int i = 1; i <= n; ++i) {
-		cin >> w[i];
-	}
-	vector<int> c(n + 1);
-	for (int i = 1; i <= n; ++i) {
-		cin >> c[i];
-	}
-	vector<vector<int>> dp(n + 1, vector<int>(W + 1));
-	vector<vector<int>> p(n + 1, vector<int>(W + 1, -1));
-	dp[1][0] = 1;
-	for (int i = 1; i <= n; ++i) {
-		for (int j = 0; j <= W; ++j) {
+		for (int j = 1; j <= m; ++j) {
 			dp[i][j] = dp[i - 1][j];
 			p[i][j] = 0;
-			if (w[i] <= j && dp[i - 1][j - w[i]] + c[i] > dp[i][j]) {
+			if (j >= w[i] && dp[i - 1][j - w[i]] + c[i] > dp[i][j]) {
 				dp[i][j] = dp[i - 1][j - w[i]] + c[i];
 				p[i][j] = 1;
 			}
 		}
 	}
-	int pos = 0;
-	for (int i = 0; i < W; ++i) {
-		if (dp[n][i] > dp[n][pos]) {
-			pos = i;
-		}
-	}
-	int cur_i = n, cur_j = pos;
+	int cur_x = n, cur_y = m;
 	vector<int> ans;
-	while (cur_i > 0) {
-		if (p[cur_i][cur_j] == 0) {
-			cur_i--;
+	while (cur_x > 0) {
+		if (p[cur_x][cur_y]) {
+			ans.push_back(cur_x);
+			cur_y -= w[cur_x];
 		}
-		else {
-			ans.push_back(cur_i);
-			cur_j -= w[cur_i];
-			cur_i--;
-		}
+		cur_x--;
+	}
+	reverse(ans.begin(), ans.end());
+	for (int e : ans) {
+		cout << e << '\n';
 	}
 }
